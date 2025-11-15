@@ -1,4 +1,4 @@
 import streamlit as st
 
-st.title("🔍 サンプルページ")
-st.write("ページ遷移が正常に動いています。")
+st.title("🔍 サンプルページ（今は未使用）")
+st.write("このページは今後マルチページ対応のときに使います。")
