@@ -46,23 +46,41 @@ elif page == "word_demo":
 
     df = pd.read_csv("data_demo/words_demo.csv")
 
-    # 1問ランダムに出題
-    q = df.sample(1).iloc[0]
+    # ▼初回だけランダムに1問選ぶ（再実行でも変わらない）
+    if "word_question" not in st.session_state:
+        q = df.sample(1).iloc[0]
+        st.session_state["word_question"] = {
+            "英単語": q["英単語"],
+            "選択肢1": q["選択肢1"],
+            "選択肢2": q["選択肢2"],
+            "選択肢3": q["選択肢3"],
+            "正解": int(q["正解"])
+        }
+
+    # ▼session_state から問題を取り出す
+    q = st.session_state["word_question"]
 
     st.write(f"### 問題：{q['英単語']} の意味は？")
 
     choices = [q['選択肢1'], q['選択肢2'], q['選択肢3']]
-    answer = q['正解']  # 正解番号
+    labels = [f"1. {choices[0]}", f"2. {choices[1]}", f"3. {choices[2]}"]
 
-    # ラジオボタンで選択
-    user = st.radio("選択肢", ['1. ' + choices[0], '2. ' + choices[1], '3. ' + choices[2]])
+    # 回答の選択
+    user = st.radio("選択肢", labels)
 
+    # ▼回答ボタンが押されたときだけ判定
     if st.button("回答する"):
-        selected = int(user[0])  # '1. ~'の最初の数字を取り出す
-        if selected == answer:
+        selected = int(user[0])  # 1. ~ の数字を取得
+        if selected == q["正解"]:
             st.success("正解！")
         else:
-            st.error(f"不正解… 正解は「{choices[answer-1]}」でした。")
+            st.error(f"不正解… 正解は「{choices[q['正解']-1]}」でした。")
+
+        # ▼次の問題を出すために session_state をクリア
+        if st.button("次の問題へ"):
+            del st.session_state["word_question"]
+            st.rerun()
+
 
 elif page == "exam_demo":
     st.markdown("## 📚 過去問デモページ（準備中）")
