@@ -30,10 +30,13 @@ if page == "score_demo":
 
     import pandas as pd
 
-    df = pd.read_csv("data_demo/scores_demo.csv")
-    
-    st.write("### デモ成績一覧（CSV読込）")
-    st.dataframe(df)
+    try:
+        df = pd.read_csv("data_demo/scores_demo.csv")
+        st.write("### デモ成績一覧（CSV読込）")
+        st.dataframe(df)
+    except Exception as e:
+        st.error(f"CSVの読込でエラーが発生しました: {e}")
+
 
 elif page == "word_demo":
     st.markdown("## 📝 英単語デモページ（準備中）")
