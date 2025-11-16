@@ -26,7 +26,14 @@ with col3:
 page = st.session_state.get("page", None)
 
 if page == "score_demo":
-    st.markdown("## 📊 成績デモページ（準備中）")
+    st.markdown("## 📊 成績デモページ")
+
+    import pandas as pd
+
+    df = pd.read_csv("data_demo/scores_demo.csv")
+    
+    st.write("### デモ成績一覧（CSV読込）")
+    st.dataframe(df)
 
 elif page == "word_demo":
     st.markdown("## 📝 英単語デモページ（準備中）")
