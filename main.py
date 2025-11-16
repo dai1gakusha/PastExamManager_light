@@ -39,7 +39,30 @@ if page == "score_demo":
 
 
 elif page == "word_demo":
-    st.markdown("## 📝 英単語デモページ（準備中）")
+    st.markdown("## 📝 英単語デモページ")
+
+    import pandas as pd
+    import random
+
+    df = pd.read_csv("data_demo/words_demo.csv")
+
+    # 1問ランダムに出題
+    q = df.sample(1).iloc[0]
+
+    st.write(f"### 問題：{q['英単語']} の意味は？")
+
+    choices = [q['選択肢1'], q['選択肢2'], q['選択肢3']]
+    answer = q['正解']  # 正解番号
+
+    # ラジオボタンで選択
+    user = st.radio("選択肢", ['1. ' + choices[0], '2. ' + choices[1], '3. ' + choices[2]])
+
+    if st.button("回答する"):
+        selected = int(user[0])  # '1. ~'の最初の数字を取り出す
+        if selected == answer:
+            st.success("正解！")
+        else:
+            st.error(f"不正解… 正解は「{choices[answer-1]}」でした。")
 
 elif page == "exam_demo":
     st.markdown("## 📚 過去問デモページ（準備中）")
